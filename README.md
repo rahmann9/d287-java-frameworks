@@ -159,7 +159,7 @@ sampleProducts.add(legoSpaceStation);
 sampleProducts.add(superheroActionFigures);
 sampleProducts.add(legoCarSet);
 ```
-line 57-101: Create toy-related parts:
+lines 57-101: Create toy-related parts:
 ```    
     Set<Part> sampleParts = new HashSet<>();
     InhousePart legoFireTruckBrick = new InhousePart();
@@ -207,4 +207,145 @@ line 57-101: Create toy-related parts:
     actionFigureLeg.setMin_inv(1);
     sampleParts.add(actionFigureLeg);
 ```
+## F.  Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
+## •  The “Buy Now” button must be next to the buttons that update and delete products.
+## •  The button should decrement the inventory of that product by one. It should not affect the inventory of any of the associated parts.
+## •  Display a message that indicates the success or failure of a purchase.
+**Added (purchaseSuccess.html):**
+lines 1-46: This page is shown when a toy is successfully purchased
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
+        h1 {
+            color: #4CAF50;
+            font-size: 2em;
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        a:active {
+            background-color: #004085;
+        }
+    </style>
+</head>
+<body>
+<h1>Your purchase was successful! Thank you for ordering from our Custom Toy Factory!</h1>
+<a href="/mainscreen">Back to Main Screen</a>
+</body>
+</html>
+```
+**Added (purchaseFailure.html):**
+This page is shown when the purchase fail
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Failed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffdddd; /* Light red background to indicate error */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #d32f2f; /* Dark red color for the error message */
+            font-size: 2em;
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #f44336; /* Red background for the error button */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        a:hover {
+            background-color: #c62828; /* Darker red when hovering */
+        }
+
+        a:active {
+            background-color: #b71c1c; /* Even darker red when clicked */
+        }
+    </style>
+</head>
+<body>
+    <h1>Sorry, your purchase could not be completed. The toy may be out of stock, or something went wrong.</h1>
+    <a href="/mainscreen">Back to Main Screen</a>
+</body>
+</html>
+
+```
+**Changes (mainscreen.html):**
+lines 87-90: Added a Buy Now button
+```html
+<form th:action="@{/buyToy}" method="GET">
+    <input type="hidden" th:name="toyID" th:value="${tempProduct.id}" />
+    <button type="submit" class="btn btn-primary btn-sm">Buy Now</button>
+</form>
+```
+**Changes (AddProductController.java):**
+lines 178-202: Added the Buy Now functionality, handling Toy Inventory Update, and integrating with existing product management
+```
+@Autowired
+    private ProductRepository toyRepository;
+    @GetMapping("/buyToy")
+    public String buyToy(@RequestParam("toyID") Long theId, Model theModel) {
+        Optional<Product> toyToBuy = toyRepository.findById(theId);
+
+        if (toyToBuy.isPresent()) {
+            Product toy = toyToBuy.get();
+
+            if (toy.getInv() > 0) {
+                // Decrease inventory by 1
+                toy.setInv(toy.getInv() - 1);
+                toyRepository.save(toy); // Save the updated toy to the database
+
+                theModel.addAttribute("message", "Your purchase was successful!");
+                return "redirect:/purchaseSuccess";
+            } else {
+                theModel.addAttribute("message", "Sorry, this toy is out of stock.");
+                return "redirect:/purchaseFailure";
+            }
+        } else {
+            theModel.addAttribute("message", "Sorry, this toy does not exist.");
+            return "redirect:/purchaseFailure";
+        }
+    }
+```

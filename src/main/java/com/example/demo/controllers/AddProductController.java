@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.domain.Part;
 import com.example.demo.domain.Product;
+import com.example.demo.repositories.ProductRepository;
 import com.example.demo.service.PartService;
 import com.example.demo.service.PartServiceImpl;
 import com.example.demo.service.ProductService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -173,4 +175,30 @@ public class AddProductController {
         theModel.addAttribute("availparts",availParts);
         return "productForm";
     }
+    @Autowired
+    private ProductRepository toyRepository;
+    @GetMapping("/buyToy")
+    public String buyToy(@RequestParam("toyID") Long theId, Model theModel) {
+        Optional<Product> toyToBuy = toyRepository.findById(theId);
+
+        if (toyToBuy.isPresent()) {
+            Product toy = toyToBuy.get();
+
+            if (toy.getInv() > 0) {
+                // Decrease inventory by 1
+                toy.setInv(toy.getInv() - 1);
+                toyRepository.save(toy); // Save the updated toy to the database
+
+                theModel.addAttribute("message", "Your purchase was successful!");
+                return "redirect:/purchaseSuccess";
+            } else {
+                theModel.addAttribute("message", "Sorry, this toy is out of stock.");
+                return "redirect:/purchaseFailure";
+            }
+        } else {
+            theModel.addAttribute("message", "Sorry, this toy does not exist.");
+            return "redirect:/purchaseFailure";
+        }
+    }
+
 }
