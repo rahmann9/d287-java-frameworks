@@ -60,8 +60,8 @@ public class BootStrapData implements CommandLineRunner {
         legoFireTruckBrick.setName("Lego Fire Engine Brick");
         legoFireTruckBrick.setPrice(2.99);
         legoFireTruckBrick.setInv(100);
-        legoFireTruckBrick.setMax_inv(100);
-        legoFireTruckBrick.setMin_inv(1);
+        legoFireTruckBrick.setMaxInv(1000);
+        legoFireTruckBrick.setMinInv(1);
         sampleParts.add(legoFireTruckBrick);
 
         InhousePart legoWheels = new InhousePart();
@@ -69,8 +69,8 @@ public class BootStrapData implements CommandLineRunner {
         legoWheels.setName("Lego Wheels");
         legoWheels.setPrice(1.99);
         legoWheels.setInv(50);
-        legoWheels.setMax_inv(100);
-        legoWheels.setMin_inv(1);
+        legoWheels.setMaxInv(1000);
+        legoWheels.setMinInv(1);
         sampleParts.add(legoWheels);
 
         InhousePart legoSpaceStationBrick = new InhousePart();
@@ -78,8 +78,8 @@ public class BootStrapData implements CommandLineRunner {
         legoSpaceStationBrick.setName("Lego Space Station Brick");
         legoSpaceStationBrick.setPrice(3.99);
         legoSpaceStationBrick.setInv(80);
-        legoSpaceStationBrick.setMax_inv(100);
-        legoSpaceStationBrick.setMin_inv(1);
+        legoSpaceStationBrick.setMaxInv(1000);
+        legoSpaceStationBrick.setMinInv(1);
         sampleParts.add(legoSpaceStationBrick);
 
         InhousePart superheroCape = new InhousePart();
@@ -87,8 +87,8 @@ public class BootStrapData implements CommandLineRunner {
         superheroCape.setName("Superhero Cape");
         superheroCape.setPrice(1.49);
         superheroCape.setInv(200);
-        superheroCape.setMax_inv(100);
-        superheroCape.setMin_inv(1);
+        superheroCape.setMaxInv(1000);
+        superheroCape.setMinInv(1);
         sampleParts.add(superheroCape);
 
         InhousePart actionFigureLeg = new InhousePart();
@@ -96,8 +96,8 @@ public class BootStrapData implements CommandLineRunner {
         actionFigureLeg.setName("Action Figure Leg");
         actionFigureLeg.setPrice(0.99);
         actionFigureLeg.setInv(150);
-        actionFigureLeg.setMax_inv(100);
-        actionFigureLeg.setMin_inv(1);
+        actionFigureLeg.setMaxInv(1000);
+        actionFigureLeg.setMinInv(1);
         sampleParts.add(actionFigureLeg);
 
         System.out.println("Started in Bootstrap");

@@ -208,9 +208,9 @@ lines 57-101: Create toy-related parts:
     sampleParts.add(actionFigureLeg);
 ```
 ## F.  Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
-## •  The “Buy Now” button must be next to the buttons that update and delete products.
-## •  The button should decrement the inventory of that product by one. It should not affect the inventory of any of the associated parts.
-## •  Display a message that indicates the success or failure of a purchase.
+#### •  The “Buy Now” button must be next to the buttons that update and delete products.
+#### •  The button should decrement the inventory of that product by one. It should not affect the inventory of any of the associated parts.
+#### •  Display a message that indicates the success or failure of a purchase.
 **Added (purchaseSuccess.html):**
 lines 1-46: This page is shown when a toy is successfully purchased
 ```html
@@ -349,3 +349,109 @@ lines 178-202: Added the Buy Now functionality, handling Toy Inventory Update, a
         }
     }
 ```
+## G.  Modify the parts to track maximum and minimum inventory by doing the following: Add additional fields to the part entity for maximum and minimum inventory. Modify the sample inventory to include the maximum and minimum fields. Add to the InhousePartForm and OutsourcedPartForm forms additional text inputs for the inventory so the user can set the maximum and minimum values. Rename the file the persistent storage is saved to. Modify the code to enforce that the inventory is between or at the minimum and maximum value.
+**Changes (Part.java):**
+lines 32-36: New fields for minimum and maximum inventory 
+```
+    @Min(value = 0, message = "Minimum inventory value must be positive")
+    int minInv;
+    @Min(value = 0, message = "Maximum inventory must be positive")
+    @Max(value = 1000, message = "Maximum inventory value must fall within set maximum")
+    int maxInv;
+```
+lines 57-58: Added default value for min(0) and max(1000) inventory
+```
+    this.minInv = 0;
+    this.maxInv = 1000;
+```
+lines 60-67: Added a second constructor to set minInv and maxInv explicitly
+```
+public Part(long id, String name, double price, int inv, int minInv, int maxInv) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.inv = inv;
+        this.minInv = minInv;
+        this.maxInv = maxInv;
+    }
+```
+lines 101-115: Added getters and setters for the minInv and maxInv, allowing these fields to be accessed and modified
+```
+public int getMinInv() {
+    return minInv;
+}
+
+public void setMinInv(int minInv) {
+    this.minInv = minInv;
+}
+
+public int getMaxInv() {
+    return maxInv;
+}
+
+public void setMaxInv(int maxInv) {
+    this.maxInv = maxInv;
+}
+```
+**Changes(mainscreen.html)**  
+lines 76-77: Added Minimum Inventory and Maximum Inventory to table
+```html
+<th>Minimum Inventory</th>
+<th>Maximum inventory</th>
+```
+lines 85-85: Added Table rows for Minimum Inventory and Maximum Inventory
+```html
+<td th:text="${tempPart.minInv}">1</td>
+<td th:text="${tempPart.maxInv}">1</td>
+```
+**Changes(BootStrapDate.java)**  
+lines 63-64: Set Minimum Inventory and Maximum Inventory for Lego Fire Truck Brick
+```
+legoFireTruckBrick.setMaxInv(1000);
+legoFireTruckBrick.setMinInv(1);
+```
+lines 72-73: Set Minimum Inventory and Maximum Inventory for Lego Wheels
+```
+legoWheels.setMaxInv(1000);
+legoWheels.setMinInv(1);
+```
+lines 81-82: Set Minimum Inventory and Maximum Inventory for Lego Space Station Brick
+```
+legoSpaceStationBrick.setMaxInv(1000);
+legoSpaceStationBrick.setMinInv(1);
+```
+lines 90-91: Set Minimum Inventory and Maximum Inventory for Superhero Cape
+```
+superheroCape.setMaxInv(1000);
+superheroCape.setMinInv(1);
+```
+lines 99-100: Set Minimum Inventory and Maximum Inventory for Action Figure Leg
+```
+actionFigureLeg.setMaxInv(1000);
+actionFigureLeg.setMinInv(1);
+```
+**Changes(application.properties)**
+line 6: Changed name of database to Custom Toy Store
+```
+spring.datasource.url=jdbc:h2:file:~/custom-toy-store
+```
+**Changes(InhousePartForm.html)**
+lines 26-27: Added Minimum Inventory and Maximum Inventory fields
+```html
+<p>Minimum Inventory: <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
+<p>Maximum Inventory: <input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+```
+line 31: Added general error display
+```html
+<p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
+```
+**Changes(OutsourcedPartForm.html)**
+lines 27-28: Added Minimum Inventory and Maximum Inventory fields
+```html
+<p>Minimum Inventory: <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
+<p>Maximum Inventory: <input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+```
+line 32: Added general error display
+```html
+<p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
+``` 

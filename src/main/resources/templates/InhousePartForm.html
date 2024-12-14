@@ -23,8 +23,12 @@
 
     <p><input type="text" th:field="*{partId}" placeholder="Part ID" class="form-control mb-4 col-4"/></p>
 
-<p><input type="submit" value="Submit" /></p>
+    <p><input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
+    <p><input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+
+    <p><input type="submit" value="Submit" /></p>
 </form>
+<p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
 <p><errors path="price" cssClass=""error/><p>
 
 <a href="http://localhost:8080/">Link
