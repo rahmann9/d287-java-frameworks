@@ -351,13 +351,12 @@ lines 178-202: Added the Buy Now functionality, handling Toy Inventory Update, a
 ```
 ## G.  Modify the parts to track maximum and minimum inventory by doing the following: Add additional fields to the part entity for maximum and minimum inventory. Modify the sample inventory to include the maximum and minimum fields. Add to the InhousePartForm and OutsourcedPartForm forms additional text inputs for the inventory so the user can set the maximum and minimum values. Rename the file the persistent storage is saved to. Modify the code to enforce that the inventory is between or at the minimum and maximum value.
 **Changes (Part.java):**
-lines 32-36: New fields for minimum and maximum inventory 
+lines 33-36: New fields for minimum and maximum inventory 
 ```
-    @Min(value = 0, message = "Minimum inventory value must be positive")
-    int minInv;
-    @Min(value = 0, message = "Maximum inventory must be positive")
-    @Max(value = 1000, message = "Maximum inventory value must fall within set maximum")
+    @Column(name = "MAX_INV")
     int maxInv;
+    @Column(name = "MIN_INV")
+    int minInv;
 ```
 lines 57-58: Added default value for min(0) and max(1000) inventory
 ```
@@ -436,22 +435,94 @@ line 6: Changed name of database to Custom Toy Store
 spring.datasource.url=jdbc:h2:file:~/custom-toy-store
 ```
 **Changes(InhousePartForm.html)**
-lines 26-27: Added Minimum Inventory and Maximum Inventory fields
+lines 26-29: Added Minimum Inventory and Maximum Inventory fields
 ```html
-<p>Minimum Inventory: <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
-<p>Maximum Inventory: <input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+<p><input type="text" path="inv" th:field="*{minInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Minimum Inventory Error</p>
+
+<p><input type="text" path="inv" th:field="*{maxInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Maximum Inventory Error</p>
+
 ```
-line 31: Added general error display
-```html
-<p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
-```
+
 **Changes(OutsourcedPartForm.html)**
-lines 27-28: Added Minimum Inventory and Maximum Inventory fields
+lines 27-30: Added Minimum Inventory and Maximum Inventory fields
 ```html
-<p>Minimum Inventory: <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
-<p>Maximum Inventory: <input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+<p><input type="text" path="inv" th:field="*{minInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Minimum Inventory Error</p>
+
+<p><input type="text" path="inv" th:field="*{maxInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Maximum Inventory Error</p>
 ```
-line 32: Added general error display
-```html
-<p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
-``` 
+
+## H. Add validation for between or at the maximum and minimum fields. The validation must include the following:
+#### •  Display error messages for low inventory when adding and updating parts if the inventory is less than the minimum number of parts.
+#### •  Display error messages for low inventory when adding and updating products lowers the part inventory below the minimum.
+#### •  Display error messages when adding and updating parts if the inventory is greater than the maximum
+**Created (ValidMinMax.java):**  
+lines 1-18: Combined annotation for both min and max inventory validation
+```
+package com.example.demo.validators;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+
+@Constraint(validatedBy = MinMaxValidator.class)
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ValidMinMax {
+    String message() default "Invalid inventory level.";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+```
+**Created (MinMaxValidator.java)**
+lines 1-29: Implements the logic for validating the minimum and maximum inventory for parts.
+```
+package com.example.demo.validators;
+
+import com.example.demo.domain.Part;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+public class MinMaxValidator implements ConstraintValidator<ValidMinMax, Part> {
+
+    @Override
+    public void initialize(ValidMinMax constraintAnnotation) {}
+
+    @Override
+    public boolean isValid(Part part, ConstraintValidatorContext context) {
+        context.disableDefaultConstraintViolation();
+
+        boolean valid = true;
+
+        if (part.getInv() < part.getMinInv()) {
+            context.buildConstraintViolationWithTemplate("Inventory must be greater than min.").addConstraintViolation();
+            valid = false;
+        }
+        if (part.getInv() > part.getMaxInv()) {
+            context.buildConstraintViolationWithTemplate("Inventory must be less than max.").addConstraintViolation();
+            valid = false;
+        }
+
+        return valid;
+    }
+}
+
+```
+**Changes(Part.java)**  
+Apply @ValidMinMax annotation to the Part class:
+line 4:
+```
+import com.example.demo.validators.ValidMinMax;
+```
+line 18:
+```
+@ValidMinMax
+```
