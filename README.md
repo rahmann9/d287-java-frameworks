@@ -454,4 +454,4 @@ lines 27-28: Added Minimum Inventory and Maximum Inventory fields
 line 32: Added general error display
 ```html
 <p th:each="err : ${#fields.allErrors()}" th:text="${err}"></p>
-``` 
+```   
