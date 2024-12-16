@@ -526,4 +526,46 @@ line 18:
 ```
 @ValidMinMax
 ```
- 
+ ## I. Add at least two unit tests for the maximum and minimum fields to the PartTest class in the test package.
+**Changes(PartTest.java):**
+lines 159-195:
+```
+@Test
+    void getMinInv() {
+        
+        int min_inv = 5;
+        
+        partIn.setMinInv(min_inv);
+        partOut.setMinInv(min_inv);
+        assertEquals(min_inv, partIn.getMinInv());
+        assertEquals(min_inv, partOut.getMinInv());
+    }
+
+    @Test
+    void setMinInv() {
+        int min_inv = 5;
+        partIn.setMinInv(min_inv);
+        partOut.setMinInv(min_inv);
+        assertEquals(min_inv, partIn.getMinInv());
+        assertEquals(min_inv, partOut.getMinInv());
+    }
+
+    @Test
+    void getMaxInv() {
+        int max_inv = 195;
+        partIn.setMaxInv(max_inv);
+        partOut.setMaxInv(max_inv);
+        assertEquals(max_inv, partIn.getMaxInv());
+        assertEquals(max_inv, partOut.getMaxInv());
+    }
+
+    @Test
+    void setMaxInv() {
+        int max_inv = 195;
+        partIn.setMaxInv(max_inv);
+        partOut.setMaxInv(max_inv);
+        assertEquals(max_inv, partIn.getMaxInv());
+        assertEquals(max_inv, partOut.getMaxInv());
+    }
+```
+## J.Remove the class files for any unused validators in order to clean your code.
