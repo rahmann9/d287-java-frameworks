@@ -147,65 +147,71 @@ import java.util.Set;
 
 lines 45-55: Create toy-related products:
 ```
-Set<Product> sampleProducts = new HashSet<Product>();
-Product legoFireTruck = new Product(1, "Lego Fire Truck Set", 29.99, 10);
-Product actionFigureSet = new Product(2, "Action Figure Set", 19.99, 15);
-Product legoSpaceStation = new Product(3, "Lego Space Station", 49.99, 5);
-Product superheroActionFigures = new Product(4, "Superhero Action Figures", 24.99, 20);
-Product legoCarSet = new Product(5, "Lego Car Set", 15.99, 30);
-sampleProducts.add(legoFireTruck);
-sampleProducts.add(actionFigureSet);
-sampleProducts.add(legoSpaceStation);
-sampleProducts.add(superheroActionFigures);
-sampleProducts.add(legoCarSet);
+if(productRepository.count() == 0) {
+
+            Set<Product> sampleProducts = new HashSet<Product>();
+            Product legoFireTruck = new Product(1, "Lego Fire Truck Set", 29.99, 10);
+            Product actionFigureSet = new Product(2, "Action Figure Set", 19.99, 15);
+            Product legoSpaceStation = new Product(3, "Lego Space Station", 49.99, 5);
+            Product superheroActionFigures = new Product(4, "Superhero Action Figures", 24.99, 20);
+            Product legoCarSet = new Product(5, "Lego Car Set", 15.99, 30);
+            sampleProducts.add(legoFireTruck);
+            sampleProducts.add(actionFigureSet);
+            sampleProducts.add(legoSpaceStation);
+            sampleProducts.add(superheroActionFigures);
+            sampleProducts.add(legoCarSet);
+            productRepository.saveAll(sampleProducts);
+        }
 ```
 lines 57-101: Create toy-related parts:
 ```    
-    Set<Part> sampleParts = new HashSet<>();
-    InhousePart legoFireTruckBrick = new InhousePart();
-    legoFireTruckBrick.setId(1);
-    legoFireTruckBrick.setName("Lego Fire Engine Brick");
-    legoFireTruckBrick.setPrice(2.99);
-    legoFireTruckBrick.setInv(100);
-    legoFireTruckBrick.setMax_inv(100);
-    legoFireTruckBrick.setMin_inv(1);
-    sampleParts.add(legoFireTruckBrick);
+        if(partRepository.count() == 0) {
+            Set<Part> sampleParts = new HashSet<Part>();
+            InhousePart legoFireTruckBrick = new InhousePart();
 
-    InhousePart legoWheels = new InhousePart();
-    legoWheels.setId(2);
-    legoWheels.setName("Lego Wheels");
-    legoWheels.setPrice(1.99);
-    legoWheels.setInv(50);
-    legoWheels.setMax_inv(100);
-    legoWheels.setMin_inv(1);
-    sampleParts.add(legoWheels);
+            legoFireTruckBrick.setName("Lego Fire Engine Brick");
+            legoFireTruckBrick.setPrice(2.99);
+            legoFireTruckBrick.setInv(100);
+            legoFireTruckBrick.setMaxInv(195);
+            legoFireTruckBrick.setMinInv(1);
+            inhousePartRepository.save(legoFireTruckBrick);
 
-    InhousePart legoSpaceStationBrick = new InhousePart();
-    legoSpaceStationBrick.setId(3);
-    legoSpaceStationBrick.setName("Lego Space Station Brick");
-    legoSpaceStationBrick.setPrice(3.99);
-    legoSpaceStationBrick.setInv(80);
-    legoSpaceStationBrick.setMax_inv(100);
-    legoSpaceStationBrick.setMin_inv(1);
-    sampleParts.add(legoSpaceStationBrick);
+            InhousePart legoWheels = new InhousePart();
 
-    InhousePart superheroCape = new InhousePart();
-    superheroCape.setId(4);
-    superheroCape.setName("Superhero Cape");
-    superheroCape.setPrice(1.49);
-    superheroCape.setInv(200);
-    superheroCape.setMax_inv(100);
-    superheroCape.setMin_inv(1);
-    sampleParts.add(superheroCape);
+            legoWheels.setName("Lego Wheels");
+            legoWheels.setPrice(1.99);
+            legoWheels.setInv(50);
+            legoWheels.setMaxInv(195);
+            legoWheels.setMinInv(1);
+            inhousePartRepository.save(legoWheels);
 
-    InhousePart actionFigureLeg = new InhousePart();
-    actionFigureLeg.setId(5);
-    actionFigureLeg.setName("Action Figure Leg");
-    actionFigureLeg.setPrice(0.99);
-    actionFigureLeg.setInv(150);
-    actionFigureLeg.setMax_inv(100);
-    actionFigureLeg.setMin_inv(1);
-    sampleParts.add(actionFigureLeg);
+            InhousePart legoSpaceStationBrick = new InhousePart();
+
+            legoSpaceStationBrick.setName("Lego Space Station Brick");
+            legoSpaceStationBrick.setPrice(3.99);
+            legoSpaceStationBrick.setInv(80);
+            legoSpaceStationBrick.setMaxInv(195);
+            legoSpaceStationBrick.setMinInv(1);
+            inhousePartRepository.save(legoSpaceStationBrick);
+
+            InhousePart superheroCape = new InhousePart();
+
+            superheroCape.setName("Superhero Cape");
+            superheroCape.setPrice(1.49);
+            superheroCape.setInv(20);
+            superheroCape.setMaxInv(185);
+            superheroCape.setMinInv(1);
+            inhousePartRepository.save(superheroCape);
+
+            InhousePart actionFigureLeg = new InhousePart();
+
+            actionFigureLeg.setName("Action Figure Leg");
+            actionFigureLeg.setPrice(0.99);
+            actionFigureLeg.setInv(150);
+            actionFigureLeg.setMaxInv(195);
+            actionFigureLeg.setMinInv(1);
+            inhousePartRepository.save(actionFigureLeg);
+        }
 ```
 ## F.  Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
 #### •  The “Buy Now” button must be next to the buttons that update and delete products.

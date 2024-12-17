@@ -60,9 +60,9 @@ public class BootStrapData implements CommandLineRunner {
             productRepository.saveAll(sampleProducts);
         }
         if(partRepository.count() == 0) {
-            Set<Part> sampleParts = new HashSet<>();
+            Set<Part> sampleParts = new HashSet<Part>();
             InhousePart legoFireTruckBrick = new InhousePart();
-            legoFireTruckBrick.setId(1);
+
             legoFireTruckBrick.setName("Lego Fire Engine Brick");
             legoFireTruckBrick.setPrice(2.99);
             legoFireTruckBrick.setInv(100);
@@ -71,7 +71,7 @@ public class BootStrapData implements CommandLineRunner {
             inhousePartRepository.save(legoFireTruckBrick);
 
             InhousePart legoWheels = new InhousePart();
-            legoWheels.setId(2);
+
             legoWheels.setName("Lego Wheels");
             legoWheels.setPrice(1.99);
             legoWheels.setInv(50);
@@ -80,7 +80,7 @@ public class BootStrapData implements CommandLineRunner {
             inhousePartRepository.save(legoWheels);
 
             InhousePart legoSpaceStationBrick = new InhousePart();
-            legoSpaceStationBrick.setId(3);
+
             legoSpaceStationBrick.setName("Lego Space Station Brick");
             legoSpaceStationBrick.setPrice(3.99);
             legoSpaceStationBrick.setInv(80);
@@ -89,7 +89,7 @@ public class BootStrapData implements CommandLineRunner {
             inhousePartRepository.save(legoSpaceStationBrick);
 
             InhousePart superheroCape = new InhousePart();
-            superheroCape.setId(4);
+
             superheroCape.setName("Superhero Cape");
             superheroCape.setPrice(1.49);
             superheroCape.setInv(20);
@@ -98,7 +98,7 @@ public class BootStrapData implements CommandLineRunner {
             inhousePartRepository.save(superheroCape);
 
             InhousePart actionFigureLeg = new InhousePart();
-            actionFigureLeg.setId(5);
+
             actionFigureLeg.setName("Action Figure Leg");
             actionFigureLeg.setPrice(0.99);
             actionFigureLeg.setInv(150);

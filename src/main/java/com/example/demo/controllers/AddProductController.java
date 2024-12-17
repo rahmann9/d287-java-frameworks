@@ -190,7 +190,7 @@ public class AddProductController {
                 toyRepository.save(toy);
 
                 theModel.addAttribute("message", "Your purchase was successful!");
-                return "redirect:/purchaseSuccess";
+                return "/purchaseSuccess";
             } else {
                 theModel.addAttribute("message", "Sorry, this toy is out of stock.");
                 return "redirect:/purchaseFailure";
