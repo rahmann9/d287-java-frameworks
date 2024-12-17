@@ -187,7 +187,7 @@ public class AddProductController {
             if (toy.getInv() > 0) {
                 // Decrease inventory by 1
                 toy.setInv(toy.getInv() - 1);
-                toyRepository.save(toy); // Save the updated toy to the database
+                toyRepository.save(toy);
 
                 theModel.addAttribute("message", "Your purchase was successful!");
                 return "redirect:/purchaseSuccess";

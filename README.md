@@ -313,12 +313,9 @@ This page is shown when the purchase fail
 
 ```
 **Changes (mainscreen.html):**
-lines 87-90: Added a Buy Now button
+line 91: Added a Buy Now button
 ```html
-<form th:action="@{/buyToy}" method="GET">
-    <input type="hidden" th:name="toyID" th:value="${tempProduct.id}" />
-    <button type="submit" class="btn btn-primary btn-sm">Buy Now</button>
-</form>
+<a th:href="@{/buyToy(toyID=${tempProduct.id})}" class="btn btn-primary btn-sm mb-3">Buy Now</a>
 ```
 **Changes (AddProductController.java):**
 lines 178-202: Added the Buy Now functionality, handling Toy Inventory Update, and integrating with existing product management
