@@ -223,7 +223,9 @@ lines 1-46: This page is shown when a toy is successfully purchased
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="refresh"
+          content="30;URL='mainscreen'">
+    <!--    <meta charset="UTF-8">-->
     <title>Purchase Successful</title>
     <style>
         body {
@@ -263,7 +265,8 @@ lines 1-46: This page is shown when a toy is successfully purchased
 </head>
 <body>
 <h1>Your purchase was successful! Thank you for ordering from our Custom Toy Factory!</h1>
-<a href="/mainscreen">Back to Main Screen</a>
+
+<a href="http://localhost:8080/">Main Screen</a>
 </body>
 </html>
 ```
