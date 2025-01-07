@@ -443,12 +443,11 @@ spring.datasource.url=jdbc:h2:file:~/custom-toy-store
 **Changes(InhousePartForm.html)**
 lines 26-29: Added Minimum Inventory and Maximum Inventory fields
 ```html
-<p><input type="text" path="inv" th:field="*{minInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p>Minimum:<input type="text" path="inv" th:field="*{minInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
 <p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Minimum Inventory Error</p>
 
-<p><input type="text" path="inv" th:field="*{maxInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
+<p>Maximum:<input type="text" path="inv" th:field="*{maxInv}" placeholder="Inventory" class="form-control mb-4 col-4"/></p>
 <p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Maximum Inventory Error</p>
-
 ```
 
 **Changes(OutsourcedPartForm.html)**
